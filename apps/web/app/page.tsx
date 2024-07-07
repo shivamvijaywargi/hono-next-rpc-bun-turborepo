@@ -2,7 +2,21 @@ import Image from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
 
-export default function Home() {
+import { AppType } from "@lmsgenie/api/src";
+import { hc } from "hono/client";
+
+const client = hc<AppType>("http://localhost:5500/");
+
+export default async function Home() {
+  const res = await client.posts.$post({
+    form: {
+      title: "Hello",
+      description: "Hono is a cool project",
+    },
+  });
+
+  console.log(await res.json());
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
